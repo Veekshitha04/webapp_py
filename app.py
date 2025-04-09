@@ -15,7 +15,32 @@ conn_str = f"Driver={{ODBC Driver 17 for SQL Server}};Server=tcp:{DB_SERVER},143
 
 @app.route('/')
 def home():
-    return "Welcome to the Flask Web App connected to Azure SQL Database!"
+    return """
+    <html>
+        <head>
+            <title>Flask + Azure SQL App</title>
+            <style>
+                body {
+                    background-color: #f0f8ff;
+                    font-family: Arial, sans-serif;
+                    text-align: center;
+                    padding-top: 100px;
+                }
+                h1 {
+                    color: #2c3e50;
+                }
+                p {
+                    color: #34495e;
+                    font-size: 18px;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>🎉 Welcome to the Flask Web App 🎉</h1>
+            <p>Connected to Azure SQL Database</p>
+        </body>
+    </html>
+    """
 
 @app.route('/employees')
 def get_employees():
