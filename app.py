@@ -11,9 +11,19 @@ DB_SERVER = os.environ.get("DB_SERVER")  # e.g. proj2-sql.database.windows.net
 DB_NAME = os.environ.get("DB_NAME")      # e.g. proj2-db
 DB_USERNAME = os.environ.get("DB_USERNAME")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
+conn_str = (
+    'DRIVER={ODBC Driver 17 for SQL Server};'
+    'SERVER=proj2-sql.privatelink.database.windows.net;'
+    'DATABASE=proj2-db;'
+    'UID=proj1_admin;'
+    'PWD=Proj@123#12;'
+    'Encrypt=yes;'
+    'TrustServerCertificate=yes;'
+)
 
 # SQL Server connection string
 #conn_str = f"Driver={{ODBC Driver 17 for SQL Server}};Server=tcp:{DB_SERVER},1433;Database={DB_NAME};Uid={DB_USERNAME};Pwd={DB_PASSWORD};Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
+"""
 conn_str = (
     'DRIVER={ODBC Driver 17 for SQL Server};'
     f'SERVER={DB_SERVER};'
@@ -23,6 +33,7 @@ conn_str = (
     'Encrypt=yes;'
     'TrustServerCertificate=yes;'
 )
+"""
 conn = pyodbc.connect(conn_str)
 
 try:
