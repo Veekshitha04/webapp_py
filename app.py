@@ -9,7 +9,7 @@ app = Flask(__name__)
 # DB connection string
 conn_str = (
     'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=proj2-sql.privatelink.database.windows.net;'
+    'SERVER=proj2-sql.database.windows.net;'
     'DATABASE=proj2-db;'
     'UID=proj1_admin;'
     'PWD=Proj@123#12;'
