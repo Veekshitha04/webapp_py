@@ -13,6 +13,12 @@ DB_PASSWORD = os.environ.get("DB_PASSWORD")
 # SQL Server connection string
 conn_str = f"Driver={{ODBC Driver 17 for SQL Server}};Server=tcp:{DB_SERVER},1433;Database={DB_NAME};Uid={DB_USERNAME};Pwd={DB_PASSWORD};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;"
 
+try:
+    conn = pyodbc.connect(conn_str)
+    print("✅ Successfully connected to DB")  # 👈 ADD THIS
+except Exception as e:
+    print(f"❌ DB connection failed: {e}")    # 👈 AND THIS
+
 @app.route('/')
 def home():
     return """
