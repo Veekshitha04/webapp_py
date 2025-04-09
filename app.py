@@ -13,7 +13,17 @@ DB_USERNAME = os.environ.get("DB_USERNAME")
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
 
 # SQL Server connection string
-conn_str = f"Driver={{ODBC Driver 17 for SQL Server}};Server=tcp:{DB_SERVER},1433;Database={DB_NAME};Uid={DB_USERNAME};Pwd={DB_PASSWORD};Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
+#conn_str = f"Driver={{ODBC Driver 17 for SQL Server}};Server=tcp:{DB_SERVER},1433;Database={DB_NAME};Uid={DB_USERNAME};Pwd={DB_PASSWORD};Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;"
+conn_str = (
+    'DRIVER={ODBC Driver 17 for SQL Server};'
+    f'SERVER={DB_SERVER};'
+    f'DATABASE={DB_NAME};'
+    f'UID={DB_USERNAME};'
+    f'PWD={DB_PASSWORD};'
+    'Encrypt=yes;'
+    'TrustServerCertificate=yes;'
+)
+conn = pyodbc.connect(conn_str)
 
 try:
     conn = pyodbc.connect(conn_str)
