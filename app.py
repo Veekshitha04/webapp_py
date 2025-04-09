@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template_string
+from flask import Flask, request
 import pyodbc
 import os
 from dotenv import load_dotenv
@@ -6,7 +6,7 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# SQL connection string (using hardcoded values or env vars)
+# DB connection string
 conn_str = (
     'DRIVER={ODBC Driver 17 for SQL Server};'
     'SERVER=proj2-sql.privatelink.database.windows.net;'
@@ -17,45 +17,43 @@ conn_str = (
     'TrustServerCertificate=yes;'
 )
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def home():
-    html = """
+    result = ''
+    if request.method == 'POST':
+        dept = request.form.get('dept')
+        try:
+            conn = pyodbc.connect(conn_str)
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, name, department FROM employees WHERE department = ?", dept)
+            rows = cursor.fetchall()
+            conn.close()
+
+            if not rows:
+                result = f"<p>No employees found in department: <b>{dept}</b></p>"
+            else:
+                result = f"<h3>Employees in department: <b>{dept}</b></h3><ul>"
+                for r in rows:
+                    result += f"<li>{r[0]} - {r[1]}</li>"
+                result += "</ul>"
+        except Exception as e:
+            result = f"<p>Error: {str(e)}</p>"
+
+    return f"""
     <html>
-        <head>
-            <title>Department Search</title>
-        </head>
-        <body style="text-align: center; padding-top: 100px; font-family: Arial;">
-            <h2>🔍 Employee Lookup</h2>
-            <form action="/search" method="post">
-                <input type="text" name="department" placeholder="Enter department name" required />
-                <button type="submit">Search</button>
+        <head><title>Department Employee Lookup</title></head>
+        <body style="font-family: Arial; text-align: center; padding-top: 50px;">
+            <h1>🎉 Welcome to the Flask Web App 🎉</h1>
+            <p>Connected to Azure SQL Database</p>
+            <form method="POST">
+                <label>Enter Department: </label>
+                <input type="text" name="dept" required>
+                <button type="submit">Submit</button>
             </form>
+            <div style="margin-top: 30px;">{result}</div>
         </body>
     </html>
     """
-    return html
-
-@app.route('/search', methods=['POST'])
-def search_employees():
-    dept = request.form['department']
-    try:
-        conn = pyodbc.connect(conn_str)
-        cursor = conn.cursor()
-        cursor.execute("SELECT id, name FROM employees WHERE department = ?", (dept,))
-        rows = cursor.fetchall()
-        conn.close()
-
-        if not rows:
-            return f"<h3>No employees found in department: {dept}</h3>"
-
-        result_html = f"<h3>Employees in '{dept}' department:</h3><ul>"
-        for r in rows:
-            result_html += f"<li>{r[0]} - {r[1]}</li>"
-        result_html += "</ul><a href='/'>🔙 Go back</a>"
-
-        return result_html
-    except Exception as e:
-        return f"<h3>Error: {e}</h3>"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050)
