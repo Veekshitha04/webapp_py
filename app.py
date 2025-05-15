@@ -9,10 +9,10 @@ app = Flask(__name__)
 # DB connection string
 conn_str = (
     'DRIVER={ODBC Driver 17 for SQL Server};'
-    'SERVER=veekshitha-sql.privatelink.database.windows.net;'
-    'DATABASE=veekshitha-db;'
-    'UID=admin_user;'
-    'PWD=Password@123#12;'
+    'SERVER=veekshitham-sql.privatelink.database.windows.net;'
+    'DATABASE=veekshitham-db;'
+    'UID=veeksh-user;'
+    'PWD=Dink@123;'
     'Encrypt=yes;'
     'TrustServerCertificate=yes;'
 )
